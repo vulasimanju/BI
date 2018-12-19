@@ -1,0 +1,78 @@
+1) sort by bday - sort -o /tmp/user.log -t "|" -k 5 /tmp/emp.lst
+
+2) find no.of females - grep -c " F " /tmp/emp.lst 
+
+3) find hotmail accs - awk -F '|' '{print $3~/F/ && $4~/hotmail/}' /tmp/emp.lst | grep -w "1" | wc -l
+
+4) name & sex of youngest emp - sort -r -k 5 -t "|" /tmp/emp.lst |awk -F " " 'NR==1 {print $3" "$4":"$6}'
+
+5) blood group count - awk -F "|" 'BEGIN {c=0;d=0;e=0} $4~/A-/{c++} $4~/AB-/{d++} $4~/'B[+]'/{e++} END {print c,d,e}' emp2.lst | sed -e 's/ /,/g'
+ 
+6) print file content - 
+y='*.*'     
+for e in $y
+    do    
+c=$(cat $e)    
+echo $e":"$c
+    done
+
+7) print file permissions - ls -l /tmp/$1 | cut -d " " -f 1
+
+8) find largest no - #!/bin/bash source.sh
+      if [$1 -gt $2 && $1 -gt $3]     
+then
+     echo "$1"     
+elif [$2 -gt $3]     
+then    
+echo "$2"
+     else
+    echo "$3"   
+fi
+
+9) pattern from string - read a        echo "$a" | grep "fox" && echo "FOUND" || echo "NOT FOUND" 
+
+10) count of files & dir - find -type f
+       ./tmp
+
+11) print the day - 
+     
+m="Mon"
+
+f="Fri"
+
+d=date | awk '{print $1}'
+
+if [$m=$d]
+    
+     then
+        
+          echo -e "Monday"
+
+else if [$f=$d]
+
+    then
+
+        echo -e "Friday"
+
+    else
+
+        echo -e "Foobar"
+
+    fi
+
+fi
+
+
+
+12) no.of normal users - 
+
+awk -F: '{ if ($3 > 1000 && $3 < 2000)
+
+            { print $1":"$3 } }' /etc/passwd | wc -l
+
+
+13) print names in reverse - read a     echo "$a" > t.txt     awk -F '|' '{print $2"|"$1}' t.txt
+
+14) list all files that have been modified today - find /tmp -mtime -1 -type f | wc -l
+
+15) print users home dir - echo "FOUND"

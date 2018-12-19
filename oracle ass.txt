@@ -1,0 +1,210 @@
+
+
+						ORACLE
+
+
+1)Retrieve the details(name,salary, and dept code) of the employees who are working in dept 20,30,40 
+from staff master.
+
+A)select staff_name,staff_sal,dept_code from staff_master where dept_code in (20,30,40);
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+2)list the details of the employees with following column headings
+staff_code = employee id
+staff_name = employee name
+hiredate =hired date
+staff_dob = staff dob
+staff_sal = salary
+staff_address = staff address
+design_code = design code
+
+A)select staff_code as "employee id",staff_name as "employee name",hiredate as "hired date",
+staff_dob as "staff dob",staff_sal as "salary",staff_address as "staff address",design_code as "design code";
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+3)display the code,subjects,and total marks for every student from the student_marks table
+  total marks will be calculated as subjects1+subjects2+subjects3
+
+A)select student_code,(subject1+subjects2+subjects3) as "total marks" from student_marks;
+
+
+
+
+------------------------------------------------------------------------------------------------------------
+
+4)list the code,name,and department number of the employees from the table staff_master who have experience of more than 15 yrs
+
+A)select staff_name,staff_code,dept_code from staff_master where ((sysdate-hiredate)/365)>15;
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+
+5)list the name and designation of the staff who have joined before jan 2003
+
+A)select staff_master.staff_name,designation_master.design_name from staff_master inner join designation_master 
+on staff_master.design_code = designation_master.design_code where hiredate<'01-Jan-2003' ;
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+6)list the name and experience(in yrs) of employees who are working as LECTURER
+
+A)select staff_name,(MONTHS_BETWEEN(SYSDATE,Hiredate)/12) AS Experience where s.design_code = d.design_code 
+and design_name = 'LECTURER';
+
+
+----------------------------------------------------------------------------------------------------------------
+
+7)list the details of the staff whose designations are either PROFESSOR or LECTURER
+
+A)select * from staff_master s,designation_master d where s.design_code=d.design_code and 
+design_name in ('Professor,'Lecturer);
+
+
+------------------------------------------------------------------------------------------------------------------
+
+8)display name concatenated with dept_code from the student_master table,seperated by comma and space.
+name the column as 'Student Info'
+
+A)select student_name||','||dept_code as "Student Info" from student_master;
+
+
+---------------------------------------------------------------------------------------------------------------
+
+9)list the name and salary of the staff who are earning between between 12000 and 25000 from the table 
+staff_master.sort them based on their salaries and name.
+
+A) select staff_name,staff_sal from staff_master where staff_sal between 12000 and 25000 order by 
+staff_sal,staff_name;
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+10)write a query which will display name,department code and date of birth of all students who were born 
+between jan 1 1990 and march 31,1993. sort it based on date of birth(asc)
+
+A) select student_name,dept_code,student_dob from student_master where student_dob between '1-Jan-1990' order by
+ student_dob;
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+11)Display each staff name and number of months they worked for the organization.order your result by number of 
+months employed.Round the number of months to closest whole number
+
+A)select staff_name,round(months_between(sysdate,HireDate)) number_months from staff_master;
+
+
+-------------------------------------------------------------------------------------------------------------------------
+12)write a query that dispalys staff name,salary and grade of all staff.grade depends on the following points:
+* if the salary>=50000 then grade=A
+*if the salary>=25000 and salary<50000 then grade=B
+*if the salary>=10000 and salary<25000 then grade=C
+*else grade =D
+
+A)select staff_name,staff_sal,case
+when staff_sal>=50000 then 'A'
+when staff_sal>=25000 and staff_sal<50000 then 'B'
+when staff_sal>=10000 and staff_sal<25000 then 'C'
+else 'D'
+end
+from staff_master;
+
+----------------------------------------------------------------------------------------------------------------
+
+13)Display the highest,lowest,total and average salary of all staff for each department
+
+A)select round(max(staff_sal)) Highest,round(min(staff_sal)) Lowest,round(sum(staff_sal)) Total,
+round(avg(staff_sal)) Average from staff_master group by Dept_Code;
+
+
+----------------------------------------------------------------------------------------------------------------
+
+14)Write a query which displays staff name,department code,department name and salary for all staff who earns
+more than 20000
+
+A)select Staff_name,s.Dept_code,Dept_name,Staff_sal from staff_master s,department_master d where s.Dept_code
+=d.Dept_code and Staff_sal>20000;
+
+---------------------------------------------------------------------------------------------------------------
+
+15)Display staff code,staff name,department name and his manager's number and name
+
+A)select Staff_code,Staff_name,Dept_name,Mgr_code from staff_master s,department_master d 
+where s.Dept_code=d.Dept_code;
+
+---------------------------------------------------------------------------------------------------------------
+
+16)create a query that will display student code,student name.department name,subject1,subject2,subject3 for all
+students who are getting 60 and above in each subject from department 10 and 20
+
+A)select s.Student_Code,Student_name,Subject1,Subject2,Subject3 from student_master s,student_marks m where
+s.Student_Code and Subject1>=60 and Subject2>=60 and Subject3>=60 and Dept_code in (10,20);
+
+
+---------------------------------------------------------------------------------------------------------------
+
+17)Display Author name for those authors who wrote more than one book
+
+A)select Book_pub_author from book_master where Book_pub_author in (select Book_pub_author from book_master group
+by Book_pub_author having count(1)>1) group by Book_pub_author;
+
+
+---------------------------------------------------------------------------------------------------------------
+
+18)Display Staff code,staff name,department name and designation for those who have joined most recently
+
+A)select Staff_code,Staff_Nmae,Dept_name,Design_name from staff_master s,department_master d,designation_master m
+where s.Dept_code d.Dept_code and s.Design_code=m.Design_code and Hiredate=(select max(Hiredate) 
+from staff_master); 
+
+
+--------------------------------------------------------------------------------------------------------------
+
+19)Get the department number and sum of salary of all non managers where the sum of salary is greater than 20000
+
+A)select dept_code,sum(staff_sal) from staff_master where staff_code not in (select distinct mgr_code from
+staff_master) group by dept_code having sum(staff_sal)>20000;
+
+
+----------------------------------------------------------------------------------------------------------------
+
+20)Determine the number of managers without listing them
+
+A)select count(distinct(mgr_code)) as total_number_of_managers from staff_master;
+
+
+----------------------------------------------------------------------------------------------------------------
+
+21)Generate a report which contains the following information.staff code,staff name,designation,department,
+book code,book name,author,fine for the staff who have not return the book.Fine will be calculated as Rs.5 per day
+
+Fine = 5*(No.of days=current date-expected return date)
+
+A)select s.staff_code,staff_name design_name,dept_name,t.book_code,book_name,book_pub_author,
+(5*(sysdate-book_expected_return_date)) "Fine" from staff_master s,department_master d,designation_master m,
+book_transactions t,book_master b where s.dept_code=d.dept_code and s.design_code=m.design_code and
+s.staff_code=t.staff_code and t.book_code=b.book_code and book_actual_return_date is null;
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+22)list the name and designation code of the staff who have joined before jan 2003 and whose salary range is 
+between 12000 and 25000
+
+A)select staff_name,design_code from staff_master where hiredate<'01-Jan-2003' and staff_sal between 12000
+ang 25000;
+
+
+----------------------------------------------------------------------------------------------------------------
